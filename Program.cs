@@ -6,8 +6,6 @@ namespace ProjetoBancoConsole
     {
         static void Main(string[] args)
         {
-            Cliente cliente = new Cliente();
-            List<Cliente> novoCliente = new List<Cliente>();
             List<Cliente> clientes = new List<Cliente>();
 
             ContaPoupanca cp = new ContaPoupanca();
@@ -29,6 +27,7 @@ namespace ProjetoBancoConsole
                 switch (opcao)
                 {
                     case "1":
+                        Cliente novoCliente = new Cliente();
                         Console.WriteLine(@"CADASTRO DE CONTA
 Para realizar o seu cadastro informe abaixo os seus seguintes dados: ");
                         //CPF
@@ -36,8 +35,8 @@ Para realizar o seu cadastro informe abaixo os seus seguintes dados: ");
                         do
                         {
                             Console.Write("CPF: ");
-                            cliente.Cpf = Console.ReadLine();
-                            bool cpfValido = cliente.ValidarCpf();
+                            novoCliente.Cpf = Console.ReadLine();
+                            bool cpfValido = novoCliente.ValidarCpf();
 
                             if(!cpfValido)
                             {
@@ -45,24 +44,24 @@ Para realizar o seu cadastro informe abaixo os seus seguintes dados: ");
 
                             }
                         } 
-                        while (!cliente.ValidarCpf());
+                        while (!novoCliente.ValidarCpf());
 
                         //NOME
                         Console.Write("Nome completo: ");
-                        cliente.Nome = Console.ReadLine();
-                        string sobrenome = cliente.Nome.Split(' ').Last();
+                        novoCliente.Nome = Console.ReadLine();
+                        string sobrenome = novoCliente.Nome.Split(' ').Last();
 
                         //TIPO CONTA
                         Console.Write("Tipo da conta (0 - CORRENTE / 1 - POUPANÇA): ");
                         int tipo = int.Parse(Console.ReadLine());
                         if (tipo == 0)
                         {
-                            cliente.Conta = new ContaCorrente(TipoConta.Corrente);
+                            novoCliente.Conta = new ContaCorrente(TipoConta.Corrente);
                             
                         }
                         else if (tipo == 1)
                         {
-                            cliente.Conta = new ContaPoupanca(TipoConta.Poupanca);
+                            novoCliente.Conta = new ContaPoupanca(TipoConta.Poupanca);
                             
                             
                         }
@@ -73,16 +72,16 @@ Para realizar o seu cadastro informe abaixo os seus seguintes dados: ");
                         }
 
                         //TIPO CLIENTE
-                        cliente.TiparCliente();
+                        novoCliente.TiparCliente();
 
-                        cliente.Conta.GerarNumeroDaConta();
+                        novoCliente.Conta.GerarNumeroDaConta();
 
-                        novoCliente.Add(cliente);
+                        clientes.Add(novoCliente);
 
                         Console.WriteLine($@"Conta cadastrada com sucesso.
 Sr.(a) {sobrenome}, o Banco Console agradece a preferência.
 
-Número da conta: {cliente.Conta.Numero}");                        
+Número da conta: {novoCliente.Conta.Numero}");                        
                         break;
                     case "2":
                         Console.Write("Digite o número da conta de origem: ");
@@ -94,10 +93,11 @@ Número da conta: {cliente.Conta.Numero}");
                         Console.Write("Digite a quantia a ser transferida: ");
                         decimal quantia = decimal.Parse(Console.ReadLine());
 
+                        //Retorna o primeiro elemento de uma lista que preencha condições específicas.
+                        //Busca na lista de clientes pelo cliente que possui o número de conta fornecido (numContaOrigem) e atribui esse cliente à variável clienteOrigem.
                         Cliente clienteOrigem = clientes.FirstOrDefault(c => c.Conta.Numero == numContaOrigem);
-                        Cliente clienteDestino = clientes.FirstOrDefault(c => c.Conta.Numero == numContaDestino);
 
-                        if (clienteOrigem != null && clienteDestino != null)
+                        if (clienteOrigem != null)
                         {
                             clienteOrigem.Conta.Transferir(quantia);
                         }
@@ -116,12 +116,10 @@ Número da conta: {cliente.Conta.Numero}");
                         Console.Write("Digite a quantia a ser depositada: ");
                         quantia = decimal.Parse(Console.ReadLine());
 
-                        clienteOrigem = clientes.FirstOrDefault(c => c.Conta.Numero == numContaOrigem);
-                        clienteDestino = clientes.FirstOrDefault(c => c.Conta.Numero == numContaDestino);
-
-                        if (clienteOrigem != null && clienteDestino != null)
+                        Cliente clienteDestino = clientes.FirstOrDefault(c => c.Conta.Numero == numContaDestino);
+                        if (clienteDestino != null)
                         {
-                            clienteOrigem.Conta.Depositar(quantia);
+                            clienteDestino.Conta.Depositar(quantia);
                         }
                         else
                         {
@@ -129,16 +127,29 @@ Número da conta: {cliente.Conta.Numero}");
                         }
                         break;
                     case "4":
-                        cliente.ConsultarSaldo();
+                        Console.Write("Digite o número da conta: ");
+                        string numConta = Console.ReadLine();
+
+                        Cliente clienteConsulta = clientes.FirstOrDefault(c => c.Conta.Numero == numConta);
+
+                        if (clienteConsulta != null)
+                        {
+                            clienteConsulta.ConsultarSaldo();
+                        }
+                        else
+                        {
+                            Console.WriteLine("Conta não encontrada.");
+                        }
                         break;
                     case "5":
                         Console.WriteLine("Sistema finalizado.");
-                        break;
+                        return;
                     default:
                         Console.WriteLine("Erro! Digite uma opção válida.");
                         break;
 
-                }
+
+                }            
             }
         }
 

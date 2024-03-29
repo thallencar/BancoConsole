@@ -43,7 +43,7 @@
                 else if (quantia <= Saldo)
                 {
                     Saldo -= quantia;
-                    Console.WriteLine($"Transferência concluída com sucesso. Saldo atual da conta: {Saldo}");
+                    Console.WriteLine($"Transferência concluída com sucesso. Saldo atual da conta: R${Saldo}.");
                 }
                 else
                 {
@@ -56,26 +56,23 @@
 
         public virtual void Depositar(decimal quantia)
         {
-            while (true)
-            {
             if (quantia < 0.01m)
             {
                     Console.WriteLine("Valor mínimo de depósito deve ser de no mínimo R$0,01 tente novamente.");
             }
-            else if (quantia <= Saldo)
+            else
             {
                     Saldo += quantia;
-                    Console.WriteLine($"Transferência concluída com sucesso. Saldo atual da conta: {Saldo}");
-            }  
-                break;
-            }
+                    Console.WriteLine($"Transferência concluída com sucesso. Saldo atual da conta: R${Saldo}.");
+            } 
+           
         }
 
         public string GerarNumeroDaConta()
         {
-            var caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-            //Iniciando um array de 11 caracteres
-            var charsNumConta = new char[11];
+            var caracteres = "0123456789";
+            //Iniciando um array de 5 caracteres
+            var charsNumConta = new char[5];
             Random random = new Random();
 
             List<string> numerosGerados = new List<string>();

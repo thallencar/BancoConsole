@@ -71,19 +71,22 @@
 
         public void ConsultarSaldo()
         {
-            Console.Write("Digite o número da conta: ");
-            string numC = Console.ReadLine();
-            if (numC == Conta.Numero)
+            if (Conta != null)
             {
-                Console.WriteLine(@$"DADOS DO CLIENTE:
+                Console.WriteLine($@"DADOS DO CLIENTE:
 Nome: {Nome}
 Tipo: {Tipo}");
-                Console.WriteLine(@$"DADOS DA CONTA:
+                Console.WriteLine($@"DADOS DA CONTA:
 Número: {Conta.Numero}
-Saldo: {Conta.Saldo}
+Saldo: R${Conta.Saldo}
 Tipo: {Conta.TipoConta}");
             }
+            else
+            {
+                Console.WriteLine("Cliente não possui uma conta associada.");
+            }
         }
+
 
     }
 }
