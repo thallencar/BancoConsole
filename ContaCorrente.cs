@@ -18,6 +18,7 @@
 
         public decimal DescontarTaxa(decimal quantia)
         {
+            Saldo += quantia;
             if (TaxaDeManutencao > Saldo)
             {
                 Saldo -= TaxaDeManutencao;
@@ -43,6 +44,7 @@
         public override void Depositar(decimal quantia)
         {
             base.Depositar(quantia);
+            
         }
     }
 }

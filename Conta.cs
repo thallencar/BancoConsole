@@ -13,6 +13,7 @@
         private string _numero;
         private decimal _saldo;
         private TipoConta _tipoConta;
+        private static List<string> numerosGerados = new List<string>();
 
         public int ContaId { get { return _contaId; } set { _contaId = value; } }
         public string Numero { get { return _numero; } set { _numero = value; } }
@@ -30,8 +31,22 @@
 
         public Conta()
         {
-            
+
         }
+
+        public virtual void Transferir(decimal quantia)
+        {
+            if (quantia > Saldo)
+            {
+                Console.WriteLine("Saldo indisponível para a quantia desejada, tente novamente.");
+            }
+            else
+            {
+                Saldo -= quantia;
+                Console.WriteLine($"Transferência concluída com sucesso. Saldo atual da conta: R${Saldo}.");
+            }
+        }
+        /*
         public virtual void Transferir(decimal quantia)
         {
             while (true)
@@ -49,23 +64,24 @@
                 {
                     Console.WriteLine("Digite um valor válido!");
                 }
-                
+
                 break;
             }
         }
+        */
 
         public virtual void Depositar(decimal quantia)
         {
-            if (quantia < 0.01m)
+            if (quantia < 0.01m || quantia == null)
             {
-                    Console.WriteLine("Valor mínimo de depósito deve ser de no mínimo R$0,01 tente novamente.");
+                Console.WriteLine("Valor mínimo de depósito deve ser de no mínimo R$0,01 tente novamente.");
             }
             else
             {
-                    Saldo += quantia;
-                    Console.WriteLine($"Transferência concluída com sucesso. Saldo atual da conta: R${Saldo}.");
-            } 
-           
+                Saldo += quantia;
+                Console.WriteLine($"Transferência concluída com sucesso. Saldo atual da conta: R${Saldo}.");
+            }
+
         }
 
         public string GerarNumeroDaConta()
@@ -74,8 +90,6 @@
             //Iniciando um array de 5 caracteres
             var charsNumConta = new char[5];
             Random random = new Random();
-
-            List<string> numerosGerados = new List<string>();
 
             for (int i = 0; i < charsNumConta.Length; i++)
             {

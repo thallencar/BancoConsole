@@ -9,7 +9,7 @@
 
     public class Cliente
     {
-        private static int _proximoIdCliente = 1;
+        private int _proximoId;
         private int _id;
         private string _cpf;
         private string _nome;
@@ -24,12 +24,14 @@
         public TipoCliente Tipo { get { return _tipo; } set { _tipo = value; } }
         public Conta Conta { get { return _conta; } set { _conta = value; } }
 
-        public Cliente(string cpf, string nome, DateTime dataDeNascimento)
+        public Cliente(int id, string cpf, string nome, DateTime dataDeNascimento, TipoCliente tipo, Conta conta)
         {
-            Id = _proximoIdCliente++;
+            Id = _proximoId++;
             Cpf = cpf;
             Nome = nome;
             DataDeNascimento = dataDeNascimento;
+            Tipo = TiparCliente();
+            Conta = conta;
         }
 
         public Cliente()
@@ -37,20 +39,19 @@
             
         }
 
-
         public bool ValidarCpf()
         {
-            
             Cpf = Cpf.Replace(" ", "");
 
             if (Cpf.Length != 11 || !Cpf.All(char.IsDigit))
             {
+                
+                Console.WriteLine("O número de CPF deve conter 11 dígitos, sem caracteres especiais.");
                 return false;
+                
             }
-            else
-            {
-                return true;
-            }
+
+            return true;
         }
 
         public TipoCliente TiparCliente()
@@ -71,22 +72,17 @@
 
         public void ConsultarSaldo()
         {
-            if (Conta != null)
-            {
-                Console.WriteLine($@"DADOS DO CLIENTE:
+            Console.WriteLine(@$"
+DADOS DO CLIENTE:
 Nome: {Nome}
 Tipo: {Tipo}");
-                Console.WriteLine($@"DADOS DA CONTA:
+            Console.WriteLine(@$"
+
+DADOS DA CONTA:
 Número: {Conta.Numero}
 Saldo: R${Conta.Saldo}
 Tipo: {Conta.TipoConta}");
-            }
-            else
-            {
-                Console.WriteLine("Cliente não possui uma conta associada.");
-            }
+            
         }
-
-
     }
 }
